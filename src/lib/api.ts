@@ -83,33 +83,9 @@ export const dashboardApi = {
     return response?.data;
   },
 
-  unmarkAsDone: async (habitId: string, date: string) => {
-    const response = await fetchWithAuth(`/habits/${habitId}/uncomplete`, {
-      method: "POST",
-      body: JSON.stringify({ date }),
-    });
-    return response?.data;
-  },
-
   getHabitStatus: async (habitId: string, date: string) => {
     const response = await fetchWithAuth(
       `/habits/${habitId}/status?date=${date}`
-    );
-    return response?.data;
-  },
-
-  getHabitStreak: async (habitId: string) => {
-    const response = await fetchWithAuth(`/habits/${habitId}/streak`);
-    return response?.data;
-  },
-
-  getMonthlyCompletions: async (
-    habitId: string,
-    year: string,
-    month: string
-  ) => {
-    const response = await fetchWithAuth(
-      `/habits/${habitId}/monthly?year=${year}&month=${month}`
     );
     return response?.data;
   },

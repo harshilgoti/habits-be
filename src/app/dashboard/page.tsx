@@ -1,5 +1,4 @@
 "use client";
-// import data from "./_components/data.json";
 import { DataTable } from "./_components/data-table";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../(auth)/_components/auth-provider";
@@ -9,11 +8,7 @@ import { Habit } from "@/lib/types";
 import { useEffect } from "react";
 
 export default function Page() {
-  const {
-    data = [],
-    isLoading,
-    error,
-  } = useQuery<Habit[]>({
+  const { data = [] } = useQuery<Habit[]>({
     queryKey: ["userHabits"],
     queryFn: dashboardApi.getAllHabits,
   });

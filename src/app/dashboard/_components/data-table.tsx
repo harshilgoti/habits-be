@@ -82,7 +82,7 @@ export function DataTable({ data: initialData }: { data: Habit[] | any[] }) {
     },
     {
       accessorKey: "",
-      header: "Habit Tracker",
+      header: "Habit Tracker By Date",
       cell: ({ row }) => (
         <Button onClick={() => handleClickHabit(row?.original)}>
           Habit Tracker

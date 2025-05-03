@@ -34,8 +34,8 @@ export function NavUser() {
           <LogOut
             className="cursor-pointer"
             onClick={async () => {
-              queryClient.clear();
               await logout();
+              queryClient.clear();
               router.push("/login");
             }}
           />

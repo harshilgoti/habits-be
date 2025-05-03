@@ -19,7 +19,7 @@ import { type RegisterFormValues, registerSchema } from "@/lib/validation";
 import { useState } from "react";
 import { useAuth } from "../../_components/auth-provider";
 
-export function RegisterForm({
+export function Register({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
@@ -120,4 +120,4 @@ export function RegisterForm({
   );
 }
 
-export default RegisterForm;
+export default Register;

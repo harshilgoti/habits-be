@@ -19,7 +19,7 @@ import { type LoginFormValues, loginSchema } from "@/lib/validation";
 import { useAuth } from "../../_components/auth-provider";
 import { useState } from "react";
 
-export function LoginForm({
+export function Login({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
@@ -103,4 +103,4 @@ export function LoginForm({
   );
 }
 
-export default LoginForm;
+export default Login;

@@ -49,6 +49,7 @@ export const HabitTracker = ({ open, setOpen, habitId }: FormType) => {
           </DialogHeader>{" "}
           <div className="flex flex-col items-center justify-center p-4 bg-white">
             <div className="w-full p-4 h-36 border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+              <span>Please select date</span>
               <Input
                 placeholder="title"
                 type="date"

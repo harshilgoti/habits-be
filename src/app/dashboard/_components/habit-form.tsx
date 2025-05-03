@@ -50,7 +50,7 @@ export const HabitForm = ({ open, setOpen }: FormType) => {
       },
     });
 
-  const { mutate: createEmployee } = useCreateHabit();
+  const { mutate: createHabitMutate } = useCreateHabit();
 
   const defaultValue = {
     title: "",
@@ -65,7 +65,7 @@ export const HabitForm = ({ open, setOpen }: FormType) => {
   const onSubmit = async ({ title }: HabitFormValues) => {
     setLoading(true);
     try {
-      await createEmployee(title);
+      await createHabitMutate(title);
       setLoading(false);
       toast.success("Lead has been created successfully!");
 
