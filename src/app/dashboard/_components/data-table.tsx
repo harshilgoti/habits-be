@@ -13,19 +13,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { CheckCircle2Icon, LoaderIcon, SquareCheck } from "lucide-react";
-
-import { toast } from "sonner";
-import { z } from "zod";
+import { LoaderIcon, SquareCheck } from "lucide-react";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 import {
   Table,
@@ -73,31 +67,6 @@ const columns: ColumnDef<Habit>[] = [
         />
       ) : null,
   },
-  // {
-  //   accessorKey: "target",
-  //   header: () => <div className="w-full text-right">Target</div>,
-  //   cell: ({ row }) => (
-  //     <form
-  //       onSubmit={(e) => {
-  //         e.preventDefault();
-  //         toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-  //           loading: `Saving ${row.original.header}`,
-  //           success: "Done",
-  //           error: "Error",
-  //         });
-  //       }}
-  //     >
-  //       <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-  //         Target
-  //       </Label>
-  //       <Input
-  //         className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background"
-  //         defaultValue={row.original.target}
-  //         id={`${row.original.id}-target`}
-  //       />
-  //     </form>
-  //   ),
-  // },
 ];
 
 export function DataTable({ data: initialData }: { data: Habit[] | any[] }) {

@@ -35,12 +35,8 @@ export const MarkAsDoneButton = ({ id, isCompleted }: MarkAsDoneButtonType) => {
   const { mutate: markAsDoneHabit, isPending } = useMarkAsDoneHabit();
 
   return (
-    <Button
-      // variant="ghost"
-      onClick={() => markAsDoneHabit({ id, isCompleted })}
-    >
+    <Button onClick={() => markAsDoneHabit({ id, isCompleted })}>
       {isPending ? <Spinner /> : "Done"}
-      {/* <ArrowUpDown /> */}
     </Button>
   );
 };

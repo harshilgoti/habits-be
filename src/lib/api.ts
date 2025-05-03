@@ -1,4 +1,4 @@
-import { API_URL } from "./constants";
+export const API_URL = process.env.MONGODB_URI || "http://localhost:8080";
 
 export async function fetchWithAuth(
   endpoint: string,
@@ -79,26 +79,6 @@ export const dashboardApi = {
       method: "PATCH",
       body: JSON.stringify(data),
     });
-    return response?.data;
-  },
-
-  getEngineeringProjects: async () => {
-    const response = await fetchWithAuth("/api/engineering/completed-projects");
-    return response?.data;
-  },
-
-  getTopManager: async () => {
-    const response = await fetchWithAuth("/api/manager/top");
-    return response?.data;
-  },
-
-  getProjectsWithSameTeam: async () => {
-    const response = await fetchWithAuth("/api/projects/same-team");
-    return response?.data;
-  },
-
-  getDashboardData: async () => {
-    const response = await fetchWithAuth("/api/dashboard");
     return response?.data;
   },
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { SquareTerminal, Users, Book } from "lucide-react";
+import { SquareTerminal } from "lucide-react";
 
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
@@ -15,12 +15,6 @@ import {
 } from "@/components/ui/sidebar";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-
   navMain: [
     {
       title: "Dashboard",

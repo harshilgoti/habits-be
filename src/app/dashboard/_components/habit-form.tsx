@@ -65,7 +65,6 @@ export const HabitForm = ({ open, setOpen }: FormType) => {
   const onSubmit = async ({ title }: HabitFormValues) => {
     setLoading(true);
     try {
-      // if (!user) return;
       await createEmployee(title);
       setLoading(false);
       toast.success("Lead has been created successfully!");
