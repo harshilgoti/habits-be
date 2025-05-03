@@ -65,12 +65,13 @@ const columns: ColumnDef<Habit>[] = [
   {
     accessorKey: "email",
     header: "Mark as done",
-    cell: ({ row }) => (
-      <MarkAsDoneButton
-        id={row?.original?.id}
-        isCompleted={row?.original?.isCompleted}
-      />
-    ),
+    cell: ({ row }) =>
+      !row?.original?.isCompleted ? (
+        <MarkAsDoneButton
+          id={row?.original?.id}
+          isCompleted={!row?.original?.isCompleted}
+        />
+      ) : null,
   },
   // {
   //   accessorKey: "target",
