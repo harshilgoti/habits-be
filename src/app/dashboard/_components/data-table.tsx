@@ -29,48 +29,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useMemo, useState } from "react";
 import { HabitForm } from "./habit-form";
 import { Habit } from "@/lib/types";
 import { MarkAsDoneButton } from "./mark-button";
-
-const columns: ColumnDef<Habit>[] = [
-  {
-    accessorKey: "title",
-    header: "Title",
-  },
-  {
-    accessorKey: "isCompleted",
-    header: "Completed",
-    cell: ({ row }) => (
-      <Badge
-        variant="outline"
-        className="flex gap-1 px-1.5 text-muted-foreground [&_svg]:size-3"
-      >
-        {row.original.isCompleted ? (
-          <SquareCheck className="text-green-500 dark:text-green-400" />
-        ) : (
-          <LoaderIcon />
-        )}
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: "Mark as done",
-    cell: ({ row }) =>
-      !row?.original?.isCompleted ? (
-        <MarkAsDoneButton
-          id={row?.original?.id}
-          isCompleted={!row?.original?.isCompleted}
-        />
-      ) : null,
-  },
-];
+import { HabitTracker } from "./habit-tracker";
 
 export function DataTable({ data: initialData }: { data: Habit[] | any[] }) {
   const [rowSelection, setRowSelection] = useState({});
+  const [selectedHabit, setSelectedHabit] = useState("");
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -80,12 +47,57 @@ export function DataTable({ data: initialData }: { data: Habit[] | any[] }) {
   });
 
   const [open, setOpen] = useState(false);
-  const [edit, setEdit] = useState(false);
+  const [openTracker, setOpenTracker] = useState(false);
 
   const data = useMemo(
     () => initialData.map((row) => ({ ...row, id: row._id })) || [],
     [initialData]
   );
+
+  const handleClickHabit = (row: any) => {
+    setSelectedHabit(row?._id);
+    setOpenTracker(true);
+  };
+
+  const columns: ColumnDef<Habit>[] = [
+    {
+      accessorKey: "title",
+      header: "Title",
+    },
+    {
+      accessorKey: "isTodayCompleted",
+      header: "Completed",
+      cell: ({ row }) => (
+        <Badge
+          variant="outline"
+          className="flex gap-1 px-1.5 text-muted-foreground [&_svg]:size-3"
+        >
+          {row.original.isTodayCompleted ? (
+            <SquareCheck className="text-green-500 dark:text-green-400" />
+          ) : (
+            <LoaderIcon />
+          )}
+        </Badge>
+      ),
+    },
+    {
+      accessorKey: "",
+      header: "Habit Tracker",
+      cell: ({ row }) => (
+        <Button onClick={() => handleClickHabit(row?.original)}>
+          Habit Tracker
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "email",
+      header: "Mark as done",
+      cell: ({ row }) =>
+        !row?.original?.isTodayCompleted ? (
+          <MarkAsDoneButton id={row?.original?.id} />
+        ) : null,
+    },
+  ];
 
   const table = useReactTable({
     data,
@@ -116,7 +128,7 @@ export function DataTable({ data: initialData }: { data: Habit[] | any[] }) {
 
   return (
     <>
-      <Tabs
+      <div
         defaultValue="outline"
         className="flex w-full flex-col justify-start gap-6"
       >
@@ -124,17 +136,13 @@ export function DataTable({ data: initialData }: { data: Habit[] | any[] }) {
           <strong>Habit</strong>
           <Button
             onClick={() => {
-              setEdit(false);
               setOpen(true);
             }}
           >
             + Add
           </Button>
         </div>
-        <TabsContent
-          value="outline"
-          className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
-        >
+        <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
           <Table>
             <TableHeader className="sticky top-0 z-10 bg-muted">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -162,6 +170,7 @@ export function DataTable({ data: initialData }: { data: Habit[] | any[] }) {
                 >
                   {table.getRowModel().rows.map((row) => (
                     <TableRow
+                      key={row?.id}
                       data-state={row.getIsSelected() && "selected"}
                       className="relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
                     >
@@ -188,18 +197,16 @@ export function DataTable({ data: initialData }: { data: Habit[] | any[] }) {
               )}
             </TableBody>
           </Table>
-          <div className="flex items-center justify-between px-4">
-            <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-              {table.getFilteredSelectedRowModel().rows.length} of{" "}
-              {table.getFilteredRowModel().rows.length} row(s) selected.
-            </div>
-            <div className="flex w-full items-center gap-8 lg:w-fit">
-              <div className="hidden items-center gap-2 lg:flex"></div>
-            </div>
-          </div>
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
       {open && <HabitForm open={open} setOpen={setOpen} />}
+      {openTracker && (
+        <HabitTracker
+          open={openTracker}
+          setOpen={setOpenTracker}
+          habitId={selectedHabit}
+        />
+      )}
     </>
   );
 }

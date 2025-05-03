@@ -3,40 +3,33 @@ import Spinner from "@/app/(auth)/_components/spinner";
 import { dashboardApi } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-type MarkAsDoneButtonType = {
+type MarkAsDoneButtonProps = {
   id: string;
-  isCompleted: boolean;
 };
 
-export const markAsDone = async ({
-  id,
-  isCompleted,
-}: {
-  id: string;
-  isCompleted: boolean;
-}) => {
-  const result = await dashboardApi.markAsDone(id, {
-    isCompleted,
-  });
-  return result.data;
+const getTodayDate = (): string => {
+  const today = new Date();
+  return today.toISOString().split("T")[0];
 };
 
-export const MarkAsDoneButton = ({ id, isCompleted }: MarkAsDoneButtonType) => {
+export const markHabitAsDone = async (id: string) => {
+  const today = getTodayDate();
+  return await dashboardApi.markAsDone(id, today);
+};
+
+export const MarkAsDoneButton = ({ id }: MarkAsDoneButtonProps) => {
   const queryClient = useQueryClient();
 
-  const useMarkAsDoneHabit = () =>
-    useMutation({
-      mutationFn: markAsDone,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["userHabits"] });
-      },
-    });
-
-  const { mutate: markAsDoneHabit, isPending } = useMarkAsDoneHabit();
+  const { mutate: markAsDoneHabit, isPending } = useMutation({
+    mutationFn: () => markHabitAsDone(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userHabits"] });
+    },
+  });
 
   return (
-    <Button onClick={() => markAsDoneHabit({ id, isCompleted })}>
-      {isPending ? <Spinner /> : "Done"}
+    <Button onClick={() => markAsDoneHabit()} disabled={isPending}>
+      {isPending ? <Spinner /> : "Mark as Done"}
     </Button>
   );
 };

@@ -9,8 +9,10 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/app/(auth)/_components/auth-provider";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function NavUser() {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { user, logout } = useAuth();
   return (
@@ -32,6 +34,7 @@ export function NavUser() {
           <LogOut
             className="cursor-pointer"
             onClick={async () => {
+              queryClient.clear();
               await logout();
               router.push("/login");
             }}

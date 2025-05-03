@@ -8,6 +8,6 @@ export interface User {
 export interface Habit {
   id: string;
   title: string;
-  isCompleted: boolean;
+  isTodayCompleted: boolean;
   createdBy: User;
 }
