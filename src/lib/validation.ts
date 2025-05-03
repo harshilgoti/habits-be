@@ -27,5 +27,10 @@ export const registerSchema = z.object({
     }),
 });
 
+export const habitSchema = z.object({
+  title: z.string().min(2, { message: "Name must be at least 2 characters" }),
+});
+
+export type HabitFormValues = z.infer<typeof habitSchema>;
 export type LoginFormValues = z.infer<typeof loginSchema>;
 export type RegisterFormValues = z.infer<typeof registerSchema>;

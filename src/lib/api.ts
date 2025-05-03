@@ -61,13 +61,24 @@ export const authApi = {
 };
 
 export const dashboardApi = {
-  getAll: async () => {
-    const response = await fetchWithAuth("/api/data");
+  getAllHabits: async () => {
+    const response = await fetchWithAuth("/habits");
+    return response?.data ?? [];
+  },
+
+  createHabit: async (data: { title: string }) => {
+    const response = await fetchWithAuth("/habits", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
     return response?.data;
   },
 
-  getMarketingBudget: async () => {
-    const response = await fetchWithAuth("/api/marketing/average-budget");
+  markAsDone: async (id: string, data: { isCompleted: boolean }) => {
+    const response = await fetchWithAuth(`/habits/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
     return response?.data;
   },
 

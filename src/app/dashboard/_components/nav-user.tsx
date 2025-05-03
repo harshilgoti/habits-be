@@ -8,9 +8,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/app/(auth)/_components/auth-provider";
 
 export function NavUser() {
   const router = useRouter();
+  const { user, logout } = useAuth();
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -24,15 +26,15 @@ export function NavUser() {
             </AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-semibold">user?.full_name</span>
-            <span className="truncate text-xs">user?.email</span>
+            <span className="truncate font-semibold">{user?.fullName}</span>
+            <span className="truncate text-xs">{user?.email}</span>
           </div>
           <LogOut
             className="cursor-pointer"
-            // onClick={async () => {
-            //   await logout();
-            //   router.push("/login");
-            // }}
+            onClick={async () => {
+              await logout();
+              router.push("/login");
+            }}
           />
         </SidebarMenuButton>
       </SidebarMenuItem>

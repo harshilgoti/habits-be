@@ -18,6 +18,7 @@ interface AuthContextType {
     password: string
   ) => Promise<void>;
   logout: () => Promise<void>;
+  me: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,7 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const checkAuth = async () => {
       try {
         const userData = await authApi.me();
-        setUser(userData);
+        setUser(userData?.data);
       } catch (error) {
         setUser(null);
       } finally {
@@ -43,11 +44,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    console.log("login", email, password);
     setIsLoading(true);
     try {
       const userData = await authApi.login({ email, password });
-      setUser(userData);
+      setUser(userData?.data);
       router.push("/dashboard");
       toast.success("Login successful", {
         description: "Welcome back!",
@@ -56,6 +56,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       toast.error("Login failed", {
         description: "Invalid email or password",
       });
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const me = async () => {
+    setIsLoading(true);
+    try {
+      const userData = await authApi.me();
+      setUser(userData?.data);
+    } catch (error) {
+      router.push("/login");
       throw error;
     } finally {
       setIsLoading(false);
@@ -103,7 +116,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, login, register, logout, me }}
+    >
       {children}
     </AuthContext.Provider>
   );
